@@ -71,6 +71,7 @@ struct msm_rotator_platform_data {
  struct msm_rot_clocks *rotator_clks;
  const char *regulator_name;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
+ char rot_iommu_split_domain;
 };
 #endif
 
