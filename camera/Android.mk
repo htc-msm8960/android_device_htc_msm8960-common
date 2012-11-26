@@ -87,7 +87,10 @@ LOCAL_SHARED_LIBRARIES += libdl
 endif
 
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
-LOCAL_MODULE := camera.$(TARGET_BOARD_PLATFORM)
+
+# FIXME hardware/qcom/camera needs ifndef0ng. Name it camera.bish for now to disable it.
+# LOCAL_MODULE := camera.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE := camera.bish
 LOCAL_MODULE_TAGS := optional
 include $(BUILD_SHARED_LIBRARY)
 
