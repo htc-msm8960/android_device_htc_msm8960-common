@@ -78,7 +78,7 @@ TARGET_USES_ION := true
 BOARD_EGL_CFG := device/htc/msm8960-common/configs/egl.cfg
 
 # Lights
-TARGET_PROVIDES_LIBLIGHT := true
+TARGET_PROVIDES_LIBLIGHTS := true
 
 # Wifi
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
