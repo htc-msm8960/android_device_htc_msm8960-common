@@ -80,7 +80,7 @@ USE_OPENGL_RENDERER := true
 TARGET_USES_C2D_COMPOSITION := true
 TARGET_USES_ION := true
 TARGET_QCOM_DISPLAY_VARIANT := caf
-BOARD_HAVE_OLD_ION_API := true
+BOARD_HAVE_OLD_ION_API := false
 BOARD_EGL_CFG := device/htc/msm8960-common/configs/egl.cfg
 
 # Lights
