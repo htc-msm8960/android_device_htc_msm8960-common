@@ -149,7 +149,7 @@ static camera_size_type default_preview_sizes[] = {
   { 960, 720}, // for panorama
 //  { 960, 544},
   { 800, 480}, // WVGA
-//  { 768, 432},
+  { 768, 432},
   { 720, 480},
   { 640, 480}, // VGA
   { 576, 432},
@@ -2312,7 +2312,7 @@ status_t QCameraHardwareInterface::setVideoSize(const CameraParameters& params)
         mParameters.set(CameraParameters::KEY_VIDEO_SIZE, "");
         //If application didn't set this parameter string, use the values from
         //getPreviewSize() as video dimensions.
-        ALOGE("No Record Size requested, use the preview dimensions");
+        ALOGV("No Record Size requested, use the preview dimensions");
         videoWidth = previewWidth;
         videoHeight = previewHeight;
     } else {
@@ -2323,7 +2323,7 @@ status_t QCameraHardwareInterface::setVideoSize(const CameraParameters& params)
             //VFE output1 shouldn't be greater than VFE output2.
             if( (previewWidth > videoWidth) || (previewHeight > videoHeight)) {
                 //Set preview sizes as record sizes.
-                ALOGE("Preview size %dx%d is greater than record size %dx%d,\
+                ALOGI("Preview size %dx%d is greater than record size %dx%d,\
                    resetting preview size to record size",previewWidth,
                      previewHeight, videoWidth, videoHeight);
                 previewWidth = videoWidth;
@@ -2338,7 +2338,6 @@ status_t QCameraHardwareInterface::setVideoSize(const CameraParameters& params)
                  * like 720P and 1080p where the application can
                  * request different preview sizes like 768x432
                  */
-                ALOGE("3D mod is on");
                 previewWidth = videoWidth;
                 previewHeight = videoHeight;
                 mParameters.setPreviewSize(previewWidth, previewHeight);
@@ -2377,20 +2376,14 @@ status_t QCameraHardwareInterface::setCameraMode(const CameraParameters& params)
 status_t QCameraHardwareInterface::setPreviewSize(const CameraParameters& params)
 {
     int width, height;
-    int oldWidth, oldHeight;
     params.getPreviewSize(&width, &height);
-    mParameters.getPreviewSize(&oldWidth, &oldHeight);
     ALOGE("################requested preview size %d x %d", width, height);
 
     // Validate the preview size
     for (size_t i = 0; i <  mPreviewSizeCount; ++i) {
         if (width ==  mPreviewSizes[i].width
            && height ==  mPreviewSizes[i].height) {
-            if((oldWidth != width) || (oldHeight!= height)) {
-                mStreamDisplay->freeBuffersBeforeStartPreview();
-            }
             mParameters.setPreviewSize(width, height);
-            ALOGE("setPreviewSize:  width: %d   heigh: %d", width, height);
             previewWidth = width;
             previewHeight = height;
             mDimension.display_width = width;

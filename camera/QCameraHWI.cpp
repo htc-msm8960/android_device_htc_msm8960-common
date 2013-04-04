@@ -342,11 +342,6 @@ void QCameraHardwareInterface::release()
     default:
         break;
     }
-    // when camera is released,
-    // we need to set preview window to NULL
-    // to trigger returning buffers to surface if it's not done yet
-    if(mStreamDisplay)
-        mStreamDisplay->setPreviewWindow(NULL);
 #if 0
     if (isRecordingRunning()) {
         stopRecordingInternal();
@@ -1098,7 +1093,6 @@ status_t QCameraHardwareInterface::startPreview2()
         ret =  mStreamSnap->start();
         if (MM_CAMERA_OK != ret){
             ALOGE("%s: error - can't start Snapshot stream!", __func__);
-            mStreamDisplay->stop();
             return BAD_VALUE;
         }
     }else{
@@ -2088,7 +2082,7 @@ void QCameraHardwareInterface::dumpFrameToFile(struct msm_frame* newFrame,
 status_t QCameraHardwareInterface::setPreviewWindow(preview_stream_ops_t* window)
 {
     status_t retVal = NO_ERROR;
-    ALOGE(" %s: E mPreviewState = %d, mStreamDisplay = %p", __FUNCTION__, mPreviewState, mStreamDisplay);
+    ALOGE(" %s: E mPreviewState = %d, mStreamDisplay = 0x%p", __FUNCTION__, mPreviewState, mStreamDisplay);
     if( window == NULL) {
         ALOGE("%s:Received Setting NULL preview window", __func__);
     }
@@ -2112,7 +2106,6 @@ status_t QCameraHardwareInterface::setPreviewWindow(preview_stream_ops_t* window
         //retVal = UNKNOWN_ERROR;
         break;
     case QCAMERA_HAL_PREVIEW_STOPPED:
-    case QCAMERA_HAL_TAKE_PICTURE:
         mPreviewWindow = window;
         ALOGE("%s: mPreviewWindow = 0x%p, mStreamDisplay = 0x%p",
                                     __func__, mPreviewWindow, mStreamDisplay);
@@ -2140,7 +2133,7 @@ int QCameraHardwareInterface::allocate_ion_memory(QCameraHalHeap_t *p_camera_mem
   int rc = 0;
   struct ion_handle_data handle_data;
 
-  p_camera_memory->main_ion_fd[cnt] = open("/dev/ion", O_RDONLY);
+  p_camera_memory->main_ion_fd[cnt] = open("/dev/ion", O_RDONLY | O_DSYNC);
   if (p_camera_memory->main_ion_fd[cnt] < 0) {
     ALOGE("Ion dev open failed\n");
     ALOGE("Error is %s\n", strerror(errno));
@@ -2174,27 +2167,6 @@ ION_ALLOC_FAILED:
   close(p_camera_memory->main_ion_fd[cnt]);
 ION_OPEN_FAILED:
   return -1;
-}
-
-int QCameraHardwareInterface::cache_ops(struct ion_flush_data *cache_data,
-  int type)
-{
-  int ion_fd, rc = 0;
-
-  ion_fd = open("/dev/ion", O_RDONLY);
-  if (ion_fd <= 0) {
-    ALOGE("%s: ION device open failed\n", __func__);
-    return -ENXIO;
-  } else {
-    rc = ioctl(ion_fd, type, cache_data);
-    if (rc < 0)
-      ALOGE("%s: Cache Invalidate failed\n", __func__);
-    else
-      ALOGV("%s: Cache OPs type(%d) success", __func__);
-    close(ion_fd);
-  }
-
-  return rc;
 }
 
 int QCameraHardwareInterface::deallocate_ion_memory(QCameraHalHeap_t *p_camera_memory, int cnt)
@@ -2290,12 +2262,10 @@ int QCameraHardwareInterface::initHeapMem( QCameraHalHeap_t *heap,
             frame->path = path;
             frame->cbcr_off =  planes[0]+heap->cbcr_offset;
             frame->y_off =  heap->y_offset;
-            frame->fd_data = heap->ion_info_fd[i];
-            frame->ion_alloc = heap->alloc[i];
             ALOGD("%s: Buffer idx: %d  addr: %x fd: %d phy_offset: %d"
                  "cbcr_off: %d y_off: %d frame_len: %d", __func__,
                  i, (unsigned int)frame->buffer, frame->fd,
-                 frame->phy_offset, cbcr_off, y_off, frame->ion_alloc.len);
+                 frame->phy_offset, cbcr_off, y_off, buf_len);
 
             buf_def->buf.mp[i].frame = *frame;
             buf_def->buf.mp[i].frame_offset = 0;
