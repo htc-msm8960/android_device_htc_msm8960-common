@@ -19,7 +19,6 @@
 #ifndef __LINUX_VIDEODEV2_H
 #define __LINUX_VIDEODEV2_H
 #include <sys/time.h>
-#include <linux/compiler.h>
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
 #include <linux/ioctl.h>
 #include <linux/types.h>
@@ -522,17 +521,17 @@ struct v4l2_framebuffer {
 struct v4l2_clip {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct v4l2_rect c;
- struct v4l2_clip __user *next;
+ struct v4l2_clip *next;
 };
 struct v4l2_window {
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  struct v4l2_rect w;
  enum v4l2_field field;
  __u32 chromakey;
- struct v4l2_clip __user *clips;
+ struct v4l2_clip *clips;
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
  __u32 clipcount;
- void __user *bitmap;
+ void *bitmap;
  __u8 global_alpha;
 };
 /* WARNING: DO NOT EDIT, AUTO-GENERATED CODE - SEE TOP FOR INSTRUCTIONS */
