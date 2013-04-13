@@ -24,9 +24,6 @@
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
 
-# Include path
-TARGET_SPECIFIC_HEADER_PATH := device/htc/msm8960-common/include
-
 BOARD_VENDOR := htc
 
 # Bootloader
