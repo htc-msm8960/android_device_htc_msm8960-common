@@ -46,6 +46,7 @@ public class HTC8960RIL extends QualcommSharedRIL implements CommandsInterface {
     private static final int RIL_UNSOL_ENTER_LPM = 1523;
     private static final int RIL_UNSOL_CDMA_3G_INDICATOR = 3009;
     private static final int RIL_UNSOL_CDMA_ENHANCE_ROAMING_INDICATOR = 3012;
+    private static final int RIL_UNSOL_CDMA_NETWORK_BASE_PLUSCODE_DIAL = 3020;
     private static final int RIL_UNSOL_RESPONSE_PHONE_MODE_CHANGE = 6002;
     private static final int RIL_UNSOL_RESPONSE_VOICE_RADIO_TECH_CHANGED = 21004;
     private static final int RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED = 21005;
@@ -178,6 +179,7 @@ public class HTC8960RIL extends QualcommSharedRIL implements CommandsInterface {
             case RIL_UNSOL_ENTER_LPM: ret = responseVoid(p); break;
             case RIL_UNSOL_CDMA_3G_INDICATOR:  ret = responseInts(p); break;
             case RIL_UNSOL_CDMA_ENHANCE_ROAMING_INDICATOR:  ret = responseInts(p); break;
+            case RIL_UNSOL_CDMA_NETWORK_BASE_PLUSCODE_DIAL:  ret = responseStrings(p); break;
             case RIL_UNSOL_RESPONSE_PHONE_MODE_CHANGE:  ret = responseInts(p); break;
             case RIL_UNSOL_RESPONSE_VOICE_RADIO_TECH_CHANGED: ret = responseVoid(p); break;
             case RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED: ret = responseVoid(p); break;
@@ -196,6 +198,7 @@ public class HTC8960RIL extends QualcommSharedRIL implements CommandsInterface {
             case RIL_UNSOL_ENTER_LPM:
             case RIL_UNSOL_CDMA_3G_INDICATOR:
             case RIL_UNSOL_CDMA_ENHANCE_ROAMING_INDICATOR:
+            case RIL_UNSOL_CDMA_NETWORK_BASE_PLUSCODE_DIAL:
             case RIL_UNSOL_RESPONSE_PHONE_MODE_CHANGE:
             case RIL_UNSOL_RESPONSE_VOICE_RADIO_TECH_CHANGED:
             case RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED:
