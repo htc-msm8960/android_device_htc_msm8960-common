@@ -64,6 +64,18 @@ public class HTC8960RIL extends QualcommSharedRIL implements CommandsInterface {
         // use old needsOldRilFeature method for feature. it would be redundant to make
         // a new method just for naming sake.
         boolean oldRil = needsOldRilFeature("icccardstatus");
+        boolean extraIccCardStates = needsOldRilFeature("extraicccardstates");
+
+        if (extraIccCardStates) {
+            int dataPosition = p.dataPosition();
+            int cardState = p.readInt();
+
+            if (cardState >= 3) {
+                return responseVoid(p);
+            } else {
+                p.setDataPosition(dataPosition);
+            }
+        }
 
         IccCardStatus cardStatus = new IccCardStatus();
         cardStatus.setCardState(p.readInt());
