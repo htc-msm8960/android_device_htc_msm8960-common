@@ -3799,7 +3799,7 @@ typedef struct {
 #define RIL_UNSOL_VOICE_RADIO_TECH_CHANGED 1035
 
 /**
- * Custom responses for HTCQualcommRIL.java
+ * Custom responses for HTCCDMAQualcommRIL.java
  */
 #define RIL_UNSOL_ENTER_LPM 1523
 #define RIL_UNSOL_CDMA_3G_INDICATOR 3009
